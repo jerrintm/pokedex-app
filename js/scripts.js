@@ -48,16 +48,42 @@ let pokemonRepository = (function () {                           /* variable 'po
 
     ];
 
+    function add(pokemon) {
+        pokemonList.push(pokemon);
+    }
+
+    function getAll() {
+        return pokemonList;
+    }
+
+    function addListItem(pokemon) {
+        let pokemonList = document.querySelector('.pokemon-List');
+        let listItem = document.createElement('li');
+        let button = document.createElement('button');
+        button.innertext = pokemon.name;
+        button.classList.add('button-class');
+        listItem.appendChild(button);
+        pokemonList.appendChild(listItem);
+    }
+
 
     return {
-        add: function (pokemon) {
-            pokemonList.push(pokemon);
-        },
-        getAll: function () {
-            return pokemonList;
-        }
+        //        add: function (pokemon) {            /* 'add' function to add pokemon to the array  */
+        //            pokemonList.push(pokemon);       /* push command pushes it to the array */
+        //        },
+        //        getAll: function () {                /* 'getAll' function will pull all elements of the array  */
+        //            return pokemonList;
+        //        }
+        add: add,
+        getAll: getAll,
+        addListItem: addListItem
     };
-})();
+
+
+
+
+}
+)();
 
 console.log(pokemonRepository.getAll());
 pokemonRepository.add({ name: 'Pikachu' });
@@ -92,16 +118,21 @@ console.log(pokemonRepository.getAll());
 
 
 /* -------------------------Below code change was added to use the IIFE vafriable pokemonRepository to call the array 'pokemonList' using foreach()---------------------------        */
+/*  below code has been removed for new code usng the DOM logic in the array declaration itself */
+//pokemonRepository.getAll().forEach(function (pokemon) {
+//    if (pokemon.height >= 9) {
+//        document.write(pokemon.name + " " + "(Height:" + " " + pokemon.height + ") - Wow! that is a big pokemon! " + "<br>");
+//    } else if (pokemon.height) {
+//        document.write(pokemon.name + " " + "(Height:" + " " + pokemon.height + "<br>")
+//    }
+// });
+//-------------------new code, above forEach code will be deprecated----
 
 pokemonRepository.getAll().forEach(function (pokemon) {
-    if (pokemon.height >= 9) {
-        document.write(pokemon.name + " " + "(Height:" + " " + pokemon.height + ") - Wow! that is a big pokemon! " + "<br>");
-    } else if (pokemon.height) {
-        document.write(pokemon.name + " " + "(Height:" + " " + pokemon.height + "<br>")
-    }
+    pokemonRepository.addListItem(pokemon);
 });
 
-
+//-------------------new code----
 
 //pokemonList.forEach(function (item, index) {         /* the foreach() is used to iterate through each element in the array, it returns the array element and array index. Here since there is are array of objects, 'item' will return each element, the 'index' value is used to reference each object within the array. The function is used within foreach to send pull the array values from the pokemonList array  */
 //    if (pokemonList[index].height > 9) {            /* checking height object from pokemonList array */
