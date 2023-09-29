@@ -49,21 +49,21 @@ let pokemonRepository = (function () {                           /* variable 'po
     ];
 
     function add(pokemon) {
-        pokemonList.push(pokemon);
+        pokemonList.push(pokemon);      /*   Function to all objects to an array,  'push' is a keyword */
     }
 
     function getAll() {
-        return pokemonList;
+        return pokemonList;        /* to retrieve all pokemons from the array */
     }
 
-    function addListItem(pokemon) {
+    function addListItem(pokemon) {               /* DOM code to select ul element from HTML code using class name   */
         let pokemonList = document.querySelector('.pokemon-List');
-        let listItem = document.createElement('li');
-        let button = document.createElement('button');
-        button.innertext = pokemon.name;
-        button.classList.add('button-class');
-        listItem.appendChild(button);
-        pokemonList.appendChild(listItem);
+        let listItem = document.createElement('li');             /* creates li element to be associated with ul  */
+        let button = document.createElement('button');           /* creates button  */
+        button.innerText = pokemon.name;                         /* names the button with the pokemon.name from the array */
+        button.classList.add('button-class');                    /* associate button with a class to be called from CSS */
+        listItem.appendChild(button);                            /* associate button to li in html */
+        pokemonList.appendChild(listItem);                       /* associate li to ul named pokemonList here */
     }
 
 
@@ -85,8 +85,8 @@ let pokemonRepository = (function () {                           /* variable 'po
 }
 )();
 
-console.log(pokemonRepository.getAll());
-pokemonRepository.add({ name: 'Pikachu' });
+console.log(pokemonRepository.getAll());      /* Prints the output, here the Pokemon array to the Console, viewable in Developer tools */
+//pokemonRepository.add({ name: 'Pikachu' });  /* Add a new object 'Pikachu' to the array  */
 console.log(pokemonRepository.getAll());
 
 /* -------------------The above array pokemonList has been masked using IIFE variable as seen above using the IIFE variable 'pokemonRepository'  --------------------- */
@@ -128,7 +128,7 @@ console.log(pokemonRepository.getAll());
 // });
 //-------------------new code, above forEach code will be deprecated----
 
-pokemonRepository.getAll().forEach(function (pokemon) {
+pokemonRepository.getAll().forEach(function (pokemon) {    /*  Calls each pokemon to excute the DOM code above in the IIFE function(creates buttons and associates pokemon name to it)   */
     pokemonRepository.addListItem(pokemon);
 });
 
