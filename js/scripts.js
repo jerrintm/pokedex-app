@@ -64,8 +64,16 @@ let pokemonRepository = (function () {                           /* variable 'po
         button.classList.add('button-class');                    /* associate button with a class to be called from CSS */
         listItem.appendChild(button);                            /* associate button to li in html */
         pokemonList.appendChild(listItem);                       /* associate li to ul named pokemonList here */
+
+        button.addEventListener('click', function () {      /* added a Event listener to the button */
+            showDetails(pokemon);                           /* code within this function would be the event handler code */
+        });
     }
 
+    function showDetails(pokemon) {                        /* Event handlder code  */
+        console.log(pokemon);
+
+    }
 
     return {
         //        add: function (pokemon) {            /* 'add' function to add pokemon to the array  */
