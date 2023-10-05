@@ -29,24 +29,45 @@ let pokemonRepository = (function () {                           /* variable 'po
     //    let pokemonList = []; // empty array
 
     let pokemonList = [];                 /* array declaration */
-    pokemonList = [                       /* array definition */
-        {
-            name: 'Bulbasaur',                /* objects within an array */
-            height: 7,
-            types: ['poison', 'fire']         /* array as an object within array pokemonList */
-        },
-        {
-            name: 'Charmander',
-            height: 6,
-            types: ['fire', 'ice']
-        },
-        {
-            name: 'Fearow',
-            height: 10,
-            types: ['bug', 'grass']
-        }
+    // pokemonList = [                       /* array definition */
+    //     {
+    //         name: 'Bulbasaur',                /* objects within an array */
+    //         height: 7,
+    //         types: ['poison', 'fire']         /* array as an object within array pokemonList */
+    //     },
+    //     {
+    //         name: 'Charmander',
+    //         height: 6,
+    //         types: ['fire', 'ice']
+    //     },
+    //     {
+    //         name: 'Fearow',
+    //         height: 10,
+    //         types: ['bug', 'grass']
+    //     }
+    //
+    // ];
 
-    ];
+    let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
+
+
+
+
+    function loadList() {
+        return fetch(apiUrl).then(function (response) {
+            return response.json();
+        }).then(function (json) {
+            json.results.forEach(function (item) {
+                let pokemon = {
+                    name: item.name,
+                    detailsUrl: item.url
+                };
+                add(pokemon);
+            });
+        }).catch(function (e) {
+            console.error(e);
+        })
+    }
 
     function add(pokemon) {
         pokemonList.push(pokemon);      /*   Function to all objects to an array,  'push' is a keyword */
@@ -70,10 +91,26 @@ let pokemonRepository = (function () {                           /* variable 'po
         });
     }
 
-    function showDetails(pokemon) {                        /* Event handlder code  */
-        console.log(pokemon);
-
+    function loadDetails(pokemon) {
+        let url = pokemon.detailsUrl;
+        return fetch(url).then(function (response) {
+            return response.json();
+        }).then(function (details) {
+            // Details to the item are added here
+            pokemon.imageUrl = details.sprites.front_default;
+            pokemon.height = details.height;
+            pokemon.types = details.types;
+        }).catch(function (e) {
+            console.error(e);
+        });
     }
+
+    function showDetails(pokemon) {                        /* Event handlder code - this function is executed when a user clicks on a pokemon, this event should be called and the subsequent function to show additional details about the pokemon executed  */
+        loadDetails(pokemon).then(function () {
+            console.log(pokemon);
+        });
+    }
+
 
     return {
         //        add: function (pokemon) {            /* 'add' function to add pokemon to the array  */
@@ -84,18 +121,25 @@ let pokemonRepository = (function () {                           /* variable 'po
         //        }
         add: add,
         getAll: getAll,
-        addListItem: addListItem
+        addListItem: addListItem,
+        loadList: loadList,
+        loadDetails: loadDetails
     };
-
-
 
 
 }
 )();
 
-console.log(pokemonRepository.getAll());      /* Prints the output, here the Pokemon array to the Console, viewable in Developer tools */
+pokemonRepository.loadList().then(function () {
+    // Data is loaded here 
+    pokemonRepository.getAll().forEach(function (pokemon) {
+        pokemonRepository.addListItem(pokemon);
+    });
+});
+
+//console.log(pokemonRepository.getAll());      /* Prints the output, here the Pokemon array to the Console, viewable in Developer tools */
 //pokemonRepository.add({ name: 'Pikachu' });  /* Add a new object 'Pikachu' to the array  */
-console.log(pokemonRepository.getAll());
+//console.log(pokemonRepository.getAll());
 
 /* -------------------The above array pokemonList has been masked using IIFE variable as seen above using the IIFE variable 'pokemonRepository'  --------------------- */
 
